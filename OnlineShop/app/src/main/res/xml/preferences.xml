@@ -11,7 +11,8 @@
         app:entries="@array/text_colors"
         app:entryValues="@array/text_colors"
         app:key="textcolor"
-        app:title="Text color" />
+        app:title="Text color"
+        app:useSimpleSummaryProvider="true" />
 
     <Preference
         app:key="feedback"

@@ -12,15 +12,15 @@ public class FireMissilesDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Fire missiles?")
-                .setPositiveButton("FIRE", new DialogInterface.OnClickListener() {
+        builder.setMessage("Dialog?")
+                .setPositiveButton("Yes.", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
+
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("No.", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
+
                     }
                 });
         // Create the AlertDialog object and return it
