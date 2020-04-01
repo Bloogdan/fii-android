@@ -7,6 +7,17 @@
         android:title="Settings" />
 
     <item
+        android:id="@+id/SensorsId"
+        android:onClick="changeToSensorActivity"
+        android:title="Sensors" />
+
+    <item
+        android:id="@+id/LocationId"
+        android:onClick="showLocation"
+        android:title="Location" />
+
+
+    <item
         android:id="@+id/DialogId"
         android:onClick="openDialog"
         android:title="Dialog" />

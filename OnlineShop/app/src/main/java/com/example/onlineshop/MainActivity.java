@@ -2,8 +2,14 @@ package com.example.onlineshop;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -36,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private ListAdapter listAdapter;
 
     private String filename = "my_file";
+
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +83,32 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stringArray);
         lista.setAdapter(arrayAdapter);
         lista.setOnItemClickListener(messageClickedHandler);
+
+
+        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Longitude: " + location.getLongitude() + "\nLatitude: " + location.getLatitude(), Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
     }
 
     @Override
@@ -130,6 +165,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void changeToSensorActivity(MenuItem item) {
+        Intent intent = new Intent(this, SensorActivity.class);
+        startActivity(intent);
+    }
+
     public void openDialog(MenuItem item) {
         FireMissilesDialogFragment dialog = new FireMissilesDialogFragment();
         dialog.show(getSupportFragmentManager(), "Dialog");
@@ -139,8 +179,10 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.editText);
         try {
             FileOutputStream fos = getApplicationContext().openFileOutput(filename, Context.MODE_APPEND);
-            String my_string = editText.getText().toString() + "\n";
-            fos.write(my_string.getBytes());
+            String my_string = editText.getText().toString();
+            fos.write((my_string + "\n").getBytes());
+            Toast toast = Toast.makeText(getApplicationContext(), my_string + " added.", Toast.LENGTH_SHORT);
+            toast.show();
         } catch (FileNotFoundException e) {
 
         } catch(IOException e) {
@@ -148,4 +190,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void showLocation(MenuItem item) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.INTERNET
+                }, 10);
+                return;
+            } else {
+                locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+            }
+        }
+    }
 }

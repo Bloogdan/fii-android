@@ -46,7 +46,7 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals("darktheme")) {
-                if(sharedPreferences.getBoolean(key, false) == true) {
+                if(sharedPreferences.getBoolean(key, false)) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 else {
